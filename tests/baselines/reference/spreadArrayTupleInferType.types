@@ -1,0 +1,101 @@
+=== tests/cases/compiler/spreadArrayTupleInferType.ts ===
+// Reproduction of #50875
+
+type TupleType = [
+>TupleType : [func: () => void, arg2: number]
+
+    func: () => void,
+    arg2: number,
+];
+
+const foo = () => {
+>foo : () => void
+>() => {    const tuples: TupleType[] = [];    tuples.forEach(([callback, ...args]) => {})} : () => void
+
+    const tuples: TupleType[] = [];
+>tuples : TupleType[]
+>[] : undefined[]
+
+    tuples.forEach(([callback, ...args]) => {})
+>tuples.forEach(([callback, ...args]) => {}) : void
+>tuples.forEach : (callbackfn: (value: TupleType, index: number, array: TupleType[]) => void, thisArg?: any) => void
+>tuples : TupleType[]
+>forEach : (callbackfn: (value: TupleType, index: number, array: TupleType[]) => void, thisArg?: any) => void
+>([callback, ...args]) => {} : ([callback, ...args]: TupleType) => void
+>callback : () => void
+>args : [arg2: number]
+}
+
+enum TupleTypes {
+>TupleTypes : TupleTypes
+
+    A,
+>A : TupleTypes.A
+
+    B,
+>B : TupleTypes.B
+}
+
+interface MyInterface {
+    [TupleTypes.A]: [
+>[TupleTypes.A] : [func: (arg: boolean) => void, arg2: number]
+>TupleTypes.A : TupleTypes.A
+>TupleTypes : typeof TupleTypes
+>A : TupleTypes.A
+
+       func: (arg: boolean) => void,
+>arg : boolean
+
+       arg2: number,
+    ];
+    [TupleTypes.B]: [
+>[TupleTypes.B] : [func: (arg: string) => void, arg2: symbol]
+>TupleTypes.B : TupleTypes.B
+>TupleTypes : typeof TupleTypes
+>B : TupleTypes.B
+
+        func: (arg: string) => void,
+>arg : string
+
+        arg2: symbol,
+    ];
+}
+
+const bar = <T extends TupleTypes>() => {
+>bar : <T extends TupleTypes>() => void
+><T extends TupleTypes>() => {    const tuples: Array<MyInterface[T]> = [];    tuples.forEach(([callback, ...args]) => {});} : <T extends TupleTypes>() => void
+
+    const tuples: Array<MyInterface[T]> = [];
+>tuples : MyInterface[T][]
+>[] : undefined[]
+
+    tuples.forEach(([callback, ...args]) => {});
+>tuples.forEach(([callback, ...args]) => {}) : void
+>tuples.forEach : (callbackfn: (value: MyInterface[T], index: number, array: MyInterface[T][]) => void, thisArg?: any) => void
+>tuples : MyInterface[T][]
+>forEach : (callbackfn: (value: MyInterface[T], index: number, array: MyInterface[T][]) => void, thisArg?: any) => void
+>([callback, ...args]) => {} : ([callback, ...args]: MyInterface[T]) => void
+>callback : ((arg: boolean) => void) | ((arg: string) => void)
+>args : (number | symbol | ((arg: boolean) => void) | ((arg: string) => void))[]
+}
+
+
+const foobar = (type: TupleTypes) => {
+>foobar : (type: TupleTypes) => void
+>(type: TupleTypes) => {    const tuples: Array<MyInterface[TupleTypes]> = [];    tuples.forEach(([callback, ...args]) => {});} : (type: TupleTypes) => void
+>type : TupleTypes
+
+    const tuples: Array<MyInterface[TupleTypes]> = [];
+>tuples : ([func: (arg: boolean) => void, arg2: number] | [func: (arg: string) => void, arg2: symbol])[]
+>[] : undefined[]
+
+    tuples.forEach(([callback, ...args]) => {});
+>tuples.forEach(([callback, ...args]) => {}) : void
+>tuples.forEach : (callbackfn: (value: [func: (arg: boolean) => void, arg2: number] | [func: (arg: string) => void, arg2: symbol], index: number, array: ([func: (arg: boolean) => void, arg2: number] | [func: (arg: string) => void, arg2: symbol])[]) => void, thisArg?: any) => void
+>tuples : ([func: (arg: boolean) => void, arg2: number] | [func: (arg: string) => void, arg2: symbol])[]
+>forEach : (callbackfn: (value: [func: (arg: boolean) => void, arg2: number] | [func: (arg: string) => void, arg2: symbol], index: number, array: ([func: (arg: boolean) => void, arg2: number] | [func: (arg: string) => void, arg2: symbol])[]) => void, thisArg?: any) => void
+>([callback, ...args]) => {} : ([callback, ...args]: [func: (arg: boolean) => void, arg2: number] | [func: (arg: string) => void, arg2: symbol]) => void
+>callback : ((arg: boolean) => void) | ((arg: string) => void)
+>args : [arg2: number] | [arg2: symbol]
+}
+

@@ -1,0 +1,101 @@
+=== tests/cases/compiler/spreadArrayTupleInferType.ts ===
+// Reproduction of #50875
+
+type TupleType = [
+>TupleType : Symbol(TupleType, Decl(spreadArrayTupleInferType.ts, 0, 0))
+
+    func: () => void,
+    arg2: number,
+];
+
+const foo = () => {
+>foo : Symbol(foo, Decl(spreadArrayTupleInferType.ts, 7, 5))
+
+    const tuples: TupleType[] = [];
+>tuples : Symbol(tuples, Decl(spreadArrayTupleInferType.ts, 8, 9))
+>TupleType : Symbol(TupleType, Decl(spreadArrayTupleInferType.ts, 0, 0))
+
+    tuples.forEach(([callback, ...args]) => {})
+>tuples.forEach : Symbol(Array.forEach, Decl(lib.es5.d.ts, --, --))
+>tuples : Symbol(tuples, Decl(spreadArrayTupleInferType.ts, 8, 9))
+>forEach : Symbol(Array.forEach, Decl(lib.es5.d.ts, --, --))
+>callback : Symbol(callback, Decl(spreadArrayTupleInferType.ts, 9, 21))
+>args : Symbol(args, Decl(spreadArrayTupleInferType.ts, 9, 30))
+}
+
+enum TupleTypes {
+>TupleTypes : Symbol(TupleTypes, Decl(spreadArrayTupleInferType.ts, 10, 1))
+
+    A,
+>A : Symbol(TupleTypes.A, Decl(spreadArrayTupleInferType.ts, 12, 17))
+
+    B,
+>B : Symbol(TupleTypes.B, Decl(spreadArrayTupleInferType.ts, 13, 6))
+}
+
+interface MyInterface {
+>MyInterface : Symbol(MyInterface, Decl(spreadArrayTupleInferType.ts, 15, 1))
+
+    [TupleTypes.A]: [
+>[TupleTypes.A] : Symbol(MyInterface[TupleTypes.A], Decl(spreadArrayTupleInferType.ts, 17, 23))
+>TupleTypes.A : Symbol(TupleTypes.A, Decl(spreadArrayTupleInferType.ts, 12, 17))
+>TupleTypes : Symbol(TupleTypes, Decl(spreadArrayTupleInferType.ts, 10, 1))
+>A : Symbol(TupleTypes.A, Decl(spreadArrayTupleInferType.ts, 12, 17))
+
+       func: (arg: boolean) => void,
+>arg : Symbol(arg, Decl(spreadArrayTupleInferType.ts, 19, 14))
+
+       arg2: number,
+    ];
+    [TupleTypes.B]: [
+>[TupleTypes.B] : Symbol(MyInterface[TupleTypes.B], Decl(spreadArrayTupleInferType.ts, 21, 6))
+>TupleTypes.B : Symbol(TupleTypes.B, Decl(spreadArrayTupleInferType.ts, 13, 6))
+>TupleTypes : Symbol(TupleTypes, Decl(spreadArrayTupleInferType.ts, 10, 1))
+>B : Symbol(TupleTypes.B, Decl(spreadArrayTupleInferType.ts, 13, 6))
+
+        func: (arg: string) => void,
+>arg : Symbol(arg, Decl(spreadArrayTupleInferType.ts, 23, 15))
+
+        arg2: symbol,
+    ];
+}
+
+const bar = <T extends TupleTypes>() => {
+>bar : Symbol(bar, Decl(spreadArrayTupleInferType.ts, 28, 5))
+>T : Symbol(T, Decl(spreadArrayTupleInferType.ts, 28, 13))
+>TupleTypes : Symbol(TupleTypes, Decl(spreadArrayTupleInferType.ts, 10, 1))
+
+    const tuples: Array<MyInterface[T]> = [];
+>tuples : Symbol(tuples, Decl(spreadArrayTupleInferType.ts, 29, 9))
+>Array : Symbol(Array, Decl(lib.es5.d.ts, --, --), Decl(lib.es5.d.ts, --, --))
+>MyInterface : Symbol(MyInterface, Decl(spreadArrayTupleInferType.ts, 15, 1))
+>T : Symbol(T, Decl(spreadArrayTupleInferType.ts, 28, 13))
+
+    tuples.forEach(([callback, ...args]) => {});
+>tuples.forEach : Symbol(Array.forEach, Decl(lib.es5.d.ts, --, --))
+>tuples : Symbol(tuples, Decl(spreadArrayTupleInferType.ts, 29, 9))
+>forEach : Symbol(Array.forEach, Decl(lib.es5.d.ts, --, --))
+>callback : Symbol(callback, Decl(spreadArrayTupleInferType.ts, 30, 21))
+>args : Symbol(args, Decl(spreadArrayTupleInferType.ts, 30, 30))
+}
+
+
+const foobar = (type: TupleTypes) => {
+>foobar : Symbol(foobar, Decl(spreadArrayTupleInferType.ts, 34, 5))
+>type : Symbol(type, Decl(spreadArrayTupleInferType.ts, 34, 16))
+>TupleTypes : Symbol(TupleTypes, Decl(spreadArrayTupleInferType.ts, 10, 1))
+
+    const tuples: Array<MyInterface[TupleTypes]> = [];
+>tuples : Symbol(tuples, Decl(spreadArrayTupleInferType.ts, 35, 9))
+>Array : Symbol(Array, Decl(lib.es5.d.ts, --, --), Decl(lib.es5.d.ts, --, --))
+>MyInterface : Symbol(MyInterface, Decl(spreadArrayTupleInferType.ts, 15, 1))
+>TupleTypes : Symbol(TupleTypes, Decl(spreadArrayTupleInferType.ts, 10, 1))
+
+    tuples.forEach(([callback, ...args]) => {});
+>tuples.forEach : Symbol(Array.forEach, Decl(lib.es5.d.ts, --, --))
+>tuples : Symbol(tuples, Decl(spreadArrayTupleInferType.ts, 35, 9))
+>forEach : Symbol(Array.forEach, Decl(lib.es5.d.ts, --, --))
+>callback : Symbol(callback, Decl(spreadArrayTupleInferType.ts, 36, 21))
+>args : Symbol(args, Decl(spreadArrayTupleInferType.ts, 36, 30))
+}
+
