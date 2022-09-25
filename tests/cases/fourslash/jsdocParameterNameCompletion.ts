@@ -22,8 +22,17 @@
 //// */
 ////function i(foo, bar) {}
 
+
+/////**
+//// * @param /*5*/
+//// */
+////function j(c, d, b, a) {}
+
+console.debug(verify.completions);
+
 verify.completions(
     { marker: ["0", "3", "4"], exact: ["foo", "bar"] },
     { marker: "1", exact: "bar" },
     { marker: "2", exact: ["canary", "canoodle"] },
+    { marker: "5", exact: ["c", "d", "b", "a"]},
 );
